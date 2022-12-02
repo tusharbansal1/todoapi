@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -25,6 +25,27 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 export default function Data() {
     const [data, setData] = useState(null)
+    const navigate=useNavigate()
+
+    const LoadDetail=(id)=>{
+        navigate("/todos/detail/"+id)
+    }
+    const LoadEdit=(id)=>{
+
+    }
+
+    const Removefuntion=(id)=>{
+            if(window.confirm("Do you want to delete?")){
+                fetch("http://localhost:8000/todos/"+id,{
+                    method:"DELETE"
+                }).then((res)=>{
+                    alert("deleted successfully")
+                    window.location.reload()
+                }).catch((err)=>{
+                    console.log(err.message)
+                })
+            }
+    }
 
     useEffect(() => {
         fetch("http://localhost:8000/todos").then((res) => {
@@ -62,8 +83,9 @@ export default function Data() {
                                     <StyledTableCell>{item.id}</StyledTableCell>
                                     <StyledTableCell>{item.title}</StyledTableCell>
                                     <StyledTableCell>
-                                        <a><Button variant="contained" color="inherit">Edit</Button></a>  
-                                        <a><Button variant="contained" color="secondary">Remove</Button></a>
+                                        <a><Button onClick={()=>{LoadEdit(item.id)}} variant="contained" color="inherit">Edit</Button></a>  
+                                        <a><Button onClick={()=>{Removefuntion(item.id)}} variant="contained" color="secondary">Remove</Button></a>
+                                        <a><Button onClick={()=>{LoadDetail(item.id)}} variant="contained" color="primary">Details</Button></a>
                                     </StyledTableCell>
                                 </TableRow>
                             ))
