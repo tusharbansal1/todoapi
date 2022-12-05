@@ -31,7 +31,7 @@ export default function Data() {
         navigate("/todos/detail/"+id)
     }
     const LoadEdit=(id)=>{
-
+        navigate("/todos/edit/"+id)
     }
 
     const Removefuntion=(id)=>{

@@ -17,13 +17,13 @@ useEffect(()=>{
     }).catch((err)=>{
         console.log(err.message )
     })
-},[])
+},[yourid])
 
   return (
     <div>
         <h1>details</h1>
         <div>
-            {
+            { data && 
                 <div>
                         <h3>The userId is : <b>{data.userId}</b> </h3>
                         <h3>id is : {data.id}</h3>
