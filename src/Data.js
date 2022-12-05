@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,7 +13,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from "react-paginate"
-
+import TextField from '@mui/material/TextField';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -25,9 +27,50 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 
 export default function Data() {
+    const[userId,setUserId]=useState("")
+    const[id,setId]=useState("")
+    const[title,setTitle]=useState("")
+    // const[active,setActive]=useState(true)
+    const[validation,setValidation]=useState(false)
+
+    // const navigate=useNavigate()
+
+    const handleSubmit = (e)=>{
+        e.preventDefault();
+        console.log({userId,id,title})
+        const data={userId,id,title}
+    
+        fetch("http://localhost:8000/todos",{
+            method:"POST",
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify(data)
+        }).then((res)=>{
+                // alert("saved successfully")
+            // navigate("/")
+            handleClose()
+        }).catch((err)=>{
+            console.log(err.message)
+        })
+
+    }
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const [data, setData] = useState(null)
     const [pagecount, setpageCount] = useState(0)
     const navigate = useNavigate()
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
 
     const LoadDetail = (id) => {
         navigate("/todos/detail/" + id)
@@ -106,11 +149,11 @@ export default function Data() {
                 variant='h2' component='h1' color="primary" gutterBottom align='center'>
                 DATA
             </Typography>
-            <div>
-                <Link to="todos/create" className="add">Add new (+)</Link>
+            <div className='field'>
+                <Button onClick={handleOpen} variant="outlined" >Add new (+)</Button>
             </div>
             <TableContainer component={Paper}>
-                <Table sx={{ maxWidth: 900 }} aria-label="customised table" align="center">
+                <Table sx={{ maxWidth: 1200 }} aria-label="customised table" align="center">
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>UserId</StyledTableCell>
@@ -155,6 +198,38 @@ export default function Data() {
                 breakLinkClassName={"page-link"}
                 activeClassName={"active"}
             />
+            <div>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                    <form onSubmit={handleSubmit}>
+            <Typography
+                variant='h2' component='h1' color="primary" gutterBottom align='center'>
+                ADD
+            </Typography>
+            <div className='field'>
+                <TextField  required value={userId} onMouseDown={e=>setValidation(true)} onChange={e=>setUserId(e.target.value)} id="outlined-basic" label="userId" variant="outlined" />
+                {userId.length===0 && validation && <span>Enter userId</span>}
+                <br />
+                <TextField  required value={id} onChange={e=>setId(e.target.value)} id="outlined-basic" label="Id" variant="outlined" /><br />
+                <TextField  required value={title} onChange={e=>setTitle(e.target.value)} id="outlined-basic" label="title" variant="outlined" />
+                {/* <FormGroup>
+                    <FormControlLabel value={active} onChange={e=>setActive(e.target.checked)}control={<Checkbox />} label="isActive" />
+                </FormGroup> */}
+                <div className='btn'>
+                <Button type="submit" variant="outlined">Save</Button>
+                <Link to="/">
+                <Button onClick={handleClose} variant="outlined">Back</Button>
+                </Link>
+                </div>
+            </div>
+            </form>
+                    </Box>
+                </Modal></div>
         </div>
     )
 }

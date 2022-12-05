@@ -24,7 +24,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Data />} />
-            <Route path='/todos/create' element={<Create />} />
+            {/* <Route path='/todos/create' element={<Create />} /> */}
             <Route path='/todos/detail/:yourid' element={<Detail />} />
             <Route path='/todos/edit/:yourid' element={<Edit />} />
           </Routes>
