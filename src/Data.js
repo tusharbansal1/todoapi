@@ -24,63 +24,58 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
         fontSize: 14,
     },
 }));
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 
 
 export default function Data() {
-    const[userId,setUserId]=useState("")
-    const[id,setId]=useState("")
-    const[title,setTitle]=useState("")
-    // const[active,setActive]=useState(true)
-    const[validation,setValidation]=useState(false)
 
-    // const navigate=useNavigate()
-
-    const handleSubmit = (e)=>{
-        e.preventDefault();
-        console.log({userId,id,title})
-        const data={userId,id,title}
-    
-        fetch("http://localhost:8000/todos",{
-            method:"POST",
-            headers:{"content-type":"application/json"},
-            body:JSON.stringify(data)
-        }).then((res)=>{
-                // alert("saved successfully")
-            // navigate("/")
-            handleClose()
-        }).catch((err)=>{
-            console.log(err.message)
-        })
-
-    }
+    const [userId, setUserId] = useState("")
+    const [id, setId] = useState("")
+    const [title, setTitle] = useState("")
+    const [validation, setValidation] = useState(false)
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [data, setData] = useState(null)
     const [pagecount, setpageCount] = useState(0)
     const navigate = useNavigate()
+    // const[active,setActive]=useState(true)
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-      };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log({ userId, id, title })
+        const data = { userId, id, title }
+
+        fetch("http://localhost:8000/todos", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(data)
+        }).then((res) => {
+            // alert("saved successfully")
+            // navigate("/")
+            handleClose()
+        }).catch((err) => {
+            console.log(err.message)
+        })
+
+    }
     const LoadDetail = (id) => {
         navigate("/todos/detail/" + id)
     }
     const LoadEdit = (id) => {
         navigate("/todos/edit/" + id)
     }
-
-    let limit = 5
-
     const Removefuntion = (id) => {
         if (window.confirm("Do you want to delete?")) {
             fetch("http://localhost:8000/todos/" + id, {
@@ -93,6 +88,7 @@ export default function Data() {
             })
         }
     }
+
 
     // useEffect(() => {
     //     fetch("http://localhost:8000/todos?_page=1&_limit=5").then((res) => {
@@ -107,6 +103,8 @@ export default function Data() {
     // const handlepagechange=()=>{
     //     console.log("clicked")
     // }
+
+    let limit = 5
 
     useEffect(() => {
         const gettodos = async () => {
@@ -206,28 +204,28 @@ export default function Data() {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                    <form onSubmit={handleSubmit}>
-            <Typography
-                variant='h2' component='h1' color="primary" gutterBottom align='center'>
-                ADD
-            </Typography>
-            <div className='field'>
-                <TextField  required value={userId} onMouseDown={e=>setValidation(true)} onChange={e=>setUserId(e.target.value)} id="outlined-basic" label="userId" variant="outlined" />
-                {userId.length===0 && validation && <span>Enter userId</span>}
-                <br />
-                <TextField  required value={id} onChange={e=>setId(e.target.value)} id="outlined-basic" label="Id" variant="outlined" /><br />
-                <TextField  required value={title} onChange={e=>setTitle(e.target.value)} id="outlined-basic" label="title" variant="outlined" />
-                {/* <FormGroup>
+                        <form onSubmit={handleSubmit}>
+                            <Typography
+                                variant='h2' component='h1' color="primary" gutterBottom align='center'>
+                                ADD
+                            </Typography>
+                            <div className='field'>
+                                <TextField required value={userId} onMouseDown={e => setValidation(true)} onChange={e => setUserId(e.target.value)} id="outlined-basic" label="userId" variant="outlined" />
+                                {userId.length === 0 && validation && <span>Enter userId</span>}
+                                <br />
+                                <TextField required value={id} onChange={e => setId(e.target.value)} id="outlined-basic" label="Id" variant="outlined" /><br />
+                                <TextField required value={title} onChange={e => setTitle(e.target.value)} id="outlined-basic" label="title" variant="outlined" />
+                                {/* <FormGroup>
                     <FormControlLabel value={active} onChange={e=>setActive(e.target.checked)}control={<Checkbox />} label="isActive" />
                 </FormGroup> */}
-                <div className='btn'>
-                <Button type="submit" variant="outlined">Save</Button>
-                <Link to="/">
-                <Button onClick={handleClose} variant="outlined">Back</Button>
-                </Link>
-                </div>
-            </div>
-            </form>
+                                <div className='btn'>
+                                    <Button type="submit" variant="outlined">Save</Button>
+                                    <Link to="/">
+                                        <Button onClick={handleClose} variant="outlined">Back</Button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </form>
                     </Box>
                 </Modal></div>
         </div>
