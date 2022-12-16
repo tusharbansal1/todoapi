@@ -48,6 +48,7 @@ export default function Data() {
     const handleClose = () => setOpen(false);
     const [data, setData] = useState(null)
     const [pagecount, setpageCount] = useState(0)
+    const[searchTitle,setSearchTitle]=useState("")
     const navigate = useNavigate()
     // const[active,setActive]=useState(true)
 
@@ -149,6 +150,12 @@ export default function Data() {
             </Typography>
             <div className='field'>
                 <Button onClick={handleOpen} variant="outlined" >Add new (+)</Button>
+                <input
+        style={{ width: "100%", height: "35px" }}
+        type="text"
+        placeholder="Search..."
+        onChange={(e) => setSearchTitle(e.target.value)}
+      />
             </div>
             <TableContainer component={Paper}>
                 <Table sx={{ maxWidth: 1200 }} aria-label="customised table" align="center">
@@ -162,7 +169,17 @@ export default function Data() {
                     </TableHead>
                     <TableBody>
                         {
-                            data && data.map(item => (
+                            data && data
+                            .filter((value) => {
+            if (searchTitle === "") {
+              return value;
+            } else if (
+              value.title.toLowerCase().includes(searchTitle.toLowerCase())
+            ) {
+              return value;
+            }
+          })
+                            .map(item => (
                                 <TableRow key={item.id}>
                                     <StyledTableCell>{item.userId}</StyledTableCell>
                                     <StyledTableCell>{item.id}</StyledTableCell>
