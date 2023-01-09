@@ -39,7 +39,7 @@ export default function Create() {
             <form onSubmit={handleSubmit}>
             <Typography
                 variant='h2' component='h1' color="primary" gutterBottom align='center'>
-                CREATE
+                CREATE         // onMouseDown={(e) => setValidation(true)}
             </Typography>
             <div className='field'>
                 <TextField  required value={userId} onMouseDown={e=>setValidation(true)} onChange={e=>setUserId(e.target.value)} id="outlined-basic" label="userId" variant="outlined" />
